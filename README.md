@@ -132,7 +132,7 @@ EmployeeWebApp/
 * 🔗 JSP: [report_form.jsp](src/main/webapp/report_form.jsp)
 
 📸 Screenshot
-![Report Form](images/report_form.png)
+![Report Form](images/report_format.png)
 
 ---
 
