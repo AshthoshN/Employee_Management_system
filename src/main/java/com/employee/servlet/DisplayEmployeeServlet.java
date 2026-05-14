@@ -7,35 +7,33 @@ import javax.servlet.annotation.WebServlet;
 
 import com.employee.dao.EmployeeDAO;
 import com.employee.model.Employee;
+import java.util.List;
 
 @WebServlet("/display")
 public class DisplayEmployeeServlet extends HttpServlet {
 
+    protected void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+        handle(req, res);
+    }
+
     protected void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
+        handle(req, res);
+    }
 
-        res.setContentType("text/html");
-
+    private void handle(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
         try {
-            int empno = Integer.parseInt(req.getParameter("empno"));
-
             EmployeeDAO dao = new EmployeeDAO();
-            Employee e = dao.getEmployee(empno);
-
-            if (e != null) {
-                res.getWriter().println("<h3>Employee Details</h3>");
-                res.getWriter().println("Emp No: " + e.getEmpno() + "<br>");
-                res.getWriter().println("Name: " + e.getEmpName() + "<br>");
-                res.getWriter().println("DoJ: " + e.getDoj() + "<br>");
-                res.getWriter().println("Gender: " + e.getGender() + "<br>");
-                res.getWriter().println("Salary: " + e.getBsalary() + "<br>");
-            } else {
-                res.getWriter().println("<h3>❌ Employee Not Found</h3>");
-            }
-
+            List<Employee> list = dao.getAllEmployees();
+            req.setAttribute("employees", list);
+            req.getRequestDispatcher("empdisplay.jsp").forward(req, res);
         } catch (Exception ex) {
             ex.printStackTrace();
-            res.getWriter().println("<h3>❌ Error: " + ex.getMessage() + "</h3>");
+            req.setAttribute("message", "Error fetching employees: " + ex.getMessage());
+            req.setAttribute("status",  "error");
+            req.getRequestDispatcher("result.jsp").forward(req, res);
         }
     }
 }
