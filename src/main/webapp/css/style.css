@@ -1,58 +1,256 @@
+/* ── Reset & Base ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
     font-family: 'Segoe UI', Tahoma, sans-serif;
-    background: linear-gradient(135deg, #fff9e1, #ffe0b2);
-    margin: 0;
-    padding: 0;
+    background: #f0f4f8;
+    color: #333;
+    min-height: 100vh;
+    padding: 30px 16px 60px;
 }
 
+/* ── Card Container ───────────────────────────────────────── */
 .container {
-    width: 400px;
-    margin: 80px auto;
-    background: white;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 520px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.10);
+    padding: 36px 32px 32px;
 }
 
-h2, h1 {
+.container.wide {
+    max-width: 900px;
+}
+
+/* ── Page Title ───────────────────────────────────────────── */
+.page-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1a237e;
+    margin-bottom: 6px;
+}
+
+.page-subtitle {
+    font-size: 0.88rem;
+    color: #888;
+    margin-bottom: 28px;
+}
+
+h1.site-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #1a237e;
+    margin-bottom: 6px;
+}
+
+/* ── Form Styles ──────────────────────────────────────────── */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid #d0d7e2;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    background: #fafbfd;
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #3f51b5;
+    box-shadow: 0 0 0 3px rgba(63,81,181,.12);
+    background: #fff;
+}
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.btn {
+    display: inline-block;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .2s, transform .1s;
+}
+
+.btn:hover  { transform: translateY(-1px); text-decoration: none; }
+.btn:active { transform: translateY(0); }
+
+.btn-primary   { background: #3f51b5; color: #fff; }
+.btn-primary:hover   { background: #303f9f; }
+
+.btn-danger    { background: #e53935; color: #fff; }
+.btn-danger:hover    { background: #b71c1c; }
+
+.btn-success   { background: #2e7d32; color: #fff; }
+.btn-success:hover   { background: #1b5e20; }
+
+.btn-secondary { background: #eceff1; color: #37474f; }
+.btn-secondary:hover { background: #cfd8dc; }
+
+.btn-full { width: 100%; margin-top: 8px; }
+
+/* ── Nav Buttons Row ──────────────────────────────────────── */
+.nav-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+    flex-wrap: wrap;
+}
+
+/* ── Home Menu Cards ──────────────────────────────────────── */
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.menu-card {
+    background: #f7f9fc;
+    border: 1.5px solid #e3e8f0;
+    border-radius: 12px;
+    padding: 20px 16px;
     text-align: center;
+    text-decoration: none;
+    color: #1a237e;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: background .2s, border-color .2s, box-shadow .2s;
+}
+
+.menu-card:hover {
+    background: #e8eaf6;
+    border-color: #3f51b5;
+    box-shadow: 0 4px 14px rgba(63,81,181,.14);
+    text-decoration: none;
+}
+
+.menu-card .icon { font-size: 1.8rem; display: block; margin-bottom: 8px; }
+
+/* ── Alerts ───────────────────────────────────────────────── */
+.alert {
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 0.93rem;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.alert-success {
+    background: #e8f5e9;
+    border: 1.5px solid #a5d6a7;
+    color: #2e7d32;
+}
+
+.alert-error {
+    background: #ffebee;
+    border: 1.5px solid #ef9a9a;
+    color: #b71c1c;
+}
+
+.alert-info {
+    background: #e3f2fd;
+    border: 1.5px solid #90caf9;
+    color: #1565c0;
+}
+
+/* ── Tables ───────────────────────────────────────────────── */
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+thead th {
+    background: #3f51b5;
+    color: #fff;
+    padding: 11px 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+tbody td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e8ecf1;
     color: #333;
 }
 
-input, select {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+tbody tr:nth-child(even) td { background: #f5f7fb; }
+tbody tr:hover td           { background: #eef0fa; }
+
+tbody tr.highlighted td {
+    background: #fff9c4 !important;
+    font-weight: 600;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background: #ff9800;
-    color: white;
+/* ── Employee Detail Card ─────────────────────────────────── */
+.detail-card {
+    background: #f7f9fc;
+    border: 1.5px solid #e3e8f0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    text-align: left;
+    margin-top: 18px;
+}
+
+.detail-card .detail-row {
+    display: flex;
+    padding: 7px 0;
+    border-bottom: 1px solid #e3e8f0;
+}
+
+.detail-card .detail-row:last-child { border-bottom: none; }
+
+.detail-card .detail-label {
+    width: 160px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    flex-shrink: 0;
+}
+
+.detail-card .detail-value {
+    font-size: 0.95rem;
+    color: #222;
+}
+
+/* ── Divider ──────────────────────────────────────────────── */
+.divider {
     border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
+    border-top: 1.5px solid #e8ecf1;
+    margin: 22px 0;
 }
 
-button:hover {
-    background: #e68900;
-}
-
-a {
-    text-decoration: none;
-    color: #ff9800;
-}
-
-.menu {
-    text-align: center;
-}
-
-.menu a {
-    display: block;
-    margin: 10px;
-    font-size: 18px;
-}
+/* ── Report section tabs ──────────────────────────────────── */
+.report-section { display: none; }
+.report-section.active { display: block; }
