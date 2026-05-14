@@ -1,27 +1,75 @@
-package com.employee.model;
+package com.employee.servlet;
 
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.WebServlet;
+
+import com.employee.dao.EmployeeDAO;
+import com.employee.model.Employee;
 import java.sql.Date;
 
-public class Employee {
+@WebServlet("/add")
+public class AddEmployeeServlet extends HttpServlet {
 
-    private int empno;
-    private String empName;
-    private String role;
-    private Date doj;
-    private double bsalary;
+    protected void doPost(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
 
-    public int getEmpno() { return empno; }
-    public void setEmpno(int empno) { this.empno = empno; }
+        try {
+            String name   = req.getParameter("empname") == null ? "" : req.getParameter("empname").trim();
+            String role   = req.getParameter("role");
+            String dojStr = req.getParameter("doj");
+            String salStr = req.getParameter("salary");
 
-    public String getEmpName() { return empName; }
-    public void setEmpName(String empName) { this.empName = empName; }
+            // ── Validation ──────────────────────────────────────────────────
+            if (name.isEmpty() || !name.matches("[a-zA-Z ]+")) {
+                req.setAttribute("message", "Name must not be empty and must contain only alphabets.");
+                req.setAttribute("status", "error");
+                req.getRequestDispatcher("result.jsp").forward(req, res);
+                return;
+            }
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+            double salary;
+            try {
+                salary = Double.parseDouble(salStr);
+            } catch (NumberFormatException nfe) {
+                req.setAttribute("message", "Please enter a valid salary.");
+                req.setAttribute("status", "error");
+                req.getRequestDispatcher("result.jsp").forward(req, res);
+                return;
+            }
 
-    public Date getDoj() { return doj; }
-    public void setDoj(Date doj) { this.doj = doj; }
+            if (salary <= 0) {
+                req.setAttribute("message", "Salary must be greater than 0.");
+                req.setAttribute("status", "error");
+                req.getRequestDispatcher("result.jsp").forward(req, res);
+                return;
+            }
 
-    public double getBsalary() { return bsalary; }
-    public void setBsalary(double bsalary) { this.bsalary = bsalary; }
+            // ── Build object and save ────────────────────────────────────────
+            Employee e = new Employee();
+            e.setEmpName(name);
+            e.setRole(role);
+            e.setDoj(Date.valueOf(dojStr));
+            e.setBsalary(salary);
+
+            EmployeeDAO dao = new EmployeeDAO();
+            int generatedId = dao.addEmployee(e);
+
+            // Fetch the saved record to display it
+            Employee saved = dao.getEmployee(generatedId);
+
+            req.setAttribute("status",      "success");
+            req.setAttribute("generatedId", generatedId);
+            req.setAttribute("employee",    saved);
+
+            req.getRequestDispatcher("add_result.jsp").forward(req, res);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            req.setAttribute("message", "Unexpected error: " + ex.getMessage());
+            req.setAttribute("status",  "error");
+            req.getRequestDispatcher("result.jsp").forward(req, res);
+        }
+    }
 }
