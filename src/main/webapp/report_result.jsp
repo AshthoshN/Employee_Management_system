@@ -5,22 +5,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Employees</title>
+    <title>Report Results</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="container wide">
-    <p class="page-title">&#128101; All Employees</p>
+    <p class="page-title">&#128202; Report Results</p>
 
     <%
         List<Employee> employees = (List<Employee>) request.getAttribute("employees");
+        String filterDesc        = (String) request.getAttribute("filterDesc");
     %>
 
+    <% if (filterDesc != null && !filterDesc.isEmpty()) { %>
+        <div class="alert alert-info">Filter: <%= filterDesc %></div>
+    <% } %>
+
     <% if (employees == null || employees.isEmpty()) { %>
-        <div class="alert alert-info">No employee records found in the database.</div>
+        <div class="alert alert-error">No employees found matching the selected filter.</div>
     <% } else { %>
-        <p class="page-subtitle">Showing <strong><%= employees.size() %></strong> employee(s)</p>
+        <p class="page-subtitle">Found <strong><%= employees.size() %></strong> record(s)</p>
         <div class="table-wrapper">
             <table>
                 <thead>
@@ -54,8 +59,8 @@
     <% } %>
 
     <div class="nav-row">
-        <a href="index.jsp" class="btn btn-secondary">&#8592; Home</a>
-        <a href="display"   class="btn btn-primary">&#8635; Refresh</a>
+        <a href="report_form.jsp" class="btn btn-secondary">&#8592; Back to Reports</a>
+        <a href="index.jsp"       class="btn btn-secondary">&#8962; Home</a>
     </div>
 </div>
 
